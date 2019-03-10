@@ -57,6 +57,8 @@ class ShadesState extends State<Shades> {
 
   void colorChanged(Color c) { setState(() => baseColor = c); }
 
+  void countChanged(int c) { setState(() => count = c); }
+
   void changeColor(BuildContext ctx) {
     showDialog(
       context: ctx,
@@ -93,6 +95,17 @@ class ShadesState extends State<Shades> {
                 .toList();
             },
             onSelected: modeChanged,
+          ),
+          PopupMenuButton(
+            icon: Icon(Icons.filter_list),
+            itemBuilder: (BuildContext _) {
+              return [5, 4, 3, 2]
+                  .map((int c) => PopupMenuItem(
+                  value: c,
+                  child: Text('${c * 2 + 1} shades', style: TextStyle(fontWeight: count == c ? FontWeight.bold : FontWeight.normal))))
+                  .toList();
+            },
+            onSelected: countChanged,
           ),
           IconButton(icon: Icon(Icons.share), onPressed: () {Share.share(colors.map((c) => toHex(c)).join('\n'));}),
         ],
