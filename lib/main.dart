@@ -3,46 +3,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:share/share.dart';
+
 void main() => runApp(App());
+
 final String appName = 'Shading Palette';
-final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm'];
-enum Mode { neutral, warmToCold, coldToWarm }
+final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm', 'Neutral to Warm', 'Neutral to Cold', 'Warm to Neurtal', 'Cold to Neutral'];
+
+enum Mode { n, w2c, c2w, n2w, n2c, w2n, c2n }
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => MaterialApp(title: appName, theme: ThemeData(primaryColor: Colors.white), home: Shades());
 }
+
 class Shades extends StatefulWidget {
   @override
   ShadesState createState() => ShadesState();
 }
+
 class ShadesState extends State<Shades> {
   final GlobalKey<ScaffoldState> sKey = new GlobalKey<ScaffoldState>();
+
   Color baseColor = Colors.deepPurpleAccent;
-  Mode mode = Mode.neutral;
+  Mode mode = Mode.n;
   int count = 5;
-  List<Color> get _colors {
+
+  List<Color> get colors {
     List<Color> colors = [baseColor];
     int step = (255 / (2 * count + 1)).floor();
     List.generate(count, (int index) => index + 1).forEach((int index) {
       int value = step * index;
       Color hColor = Color(baseColor.value)
-          .withRed(up(baseColor.red, value, mode == Mode.coldToWarm))
+          .withRed(up(baseColor.red, value, mode == Mode.c2w || mode == Mode.n2w))
           .withGreen(up(baseColor.green, value, false))
-          .withBlue(up(baseColor.blue, value, mode == Mode.warmToCold));
+          .withBlue(up(baseColor.blue, value, mode == Mode.w2c || mode == Mode.n2c));
       Color sColor = Color(baseColor.value)
-          .withRed(down(baseColor.red, value, mode == Mode.warmToCold))
+          .withRed(down(baseColor.red, value, mode == Mode.w2c || mode == Mode.w2n))
           .withGreen(down(baseColor.green, value, false))
-          .withBlue(down(baseColor.blue, value, mode == Mode.coldToWarm));
+          .withBlue(down(baseColor.blue, value, mode == Mode.c2w || mode == Mode.c2n));
       colors.add(hColor);
       colors.insert(0, sColor);
     });
     return colors;
   }
+
   int up(int c, int value, bool faster) => min((c + value * (faster ? 1.5 : 1)).round(), 255);
+
   int down(int c, int value, bool slower) => max((c - value * (slower ? 0.5 : 1)).round(), 0);
+
   String toHex(Color c) => '#${c.value.toRadixString(16).substring(2)}';
+
   void modeChanged(Mode m) { setState(() => mode = m); }
+
   void colorChanged(Color c) { setState(() => baseColor = c); }
+
   void changeColor(BuildContext ctx) {
     showDialog(
       context: ctx,
@@ -50,6 +64,7 @@ class ShadesState extends State<Shades> {
         title: Text('Change base color'),
         content: SingleChildScrollView(child: ColorPicker(pickerColor: baseColor, onColorChanged: colorChanged))));
   }
+
   void _onTap(Color c) {
     final snackBar = SnackBar(
       backgroundColor: Colors.white,
@@ -59,6 +74,7 @@ class ShadesState extends State<Shades> {
     sKey.currentState.hideCurrentSnackBar();
     sKey.currentState.showSnackBar(snackBar);
   }
+
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
@@ -78,17 +94,20 @@ class ShadesState extends State<Shades> {
             },
             onSelected: modeChanged,
           ),
-          IconButton(icon: Icon(Icons.share), onPressed: () {Share.share(_colors.map((c) => toHex(c)).join('\n'));}),
+          IconButton(icon: Icon(Icons.share), onPressed: () {Share.share(colors.map((c) => toHex(c)).join('\n'));}),
         ],
       ),
-      body: Palette(colors: _colors, onTap: _onTap)
+      body: Palette(colors: colors, onTap: _onTap)
     );
   }
 }
+
 class Palette extends StatelessWidget {
   Palette({@required this.colors, @required this.onTap});
+
   final List<Color> colors;
   final Function onTap;
+
   @override
   Widget build(BuildContext context) {
     return Column(
