@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:share/share.dart';
-void main() => runApp(MyApp());
+void main() => runApp(App());
 final String appName = 'Shading Palette';
 final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm'];
 enum Mode { neutral, warmToCold, coldToWarm }
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => MaterialApp(title: appName, theme: ThemeData(primaryColor: Colors.white), home: Shades());
 }
