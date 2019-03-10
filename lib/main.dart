@@ -64,7 +64,7 @@ class ShadesState extends State<Shades> {
       context: ctx,
       builder: (BuildContext _) => AlertDialog(
         title: Text('Change base color'),
-        content: SingleChildScrollView(child: ColorPicker(pickerColor: baseColor, onColorChanged: colorChanged))));
+        content: SingleChildScrollView(child: ColorPicker(enableAlpha: false, pickerColor: baseColor, onColorChanged: colorChanged))));
   }
 
   void _onTap(Color c) {
