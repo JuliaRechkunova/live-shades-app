@@ -67,7 +67,7 @@ enum ShadesMode {
   warmToCold,
   neutral,
   coldToWarm
-};
+}
 
 class Shades extends StatelessWidget {
   Shades({@required this.baseColor, @required this.count, @required this.mode});
