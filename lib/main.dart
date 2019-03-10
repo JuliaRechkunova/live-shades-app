@@ -55,6 +55,12 @@ class ShadesScreenState extends State<ShadesScreen> {
     return colors;
   }
 
+  int down(int c, int value, bool dominating) =>
+      max((c - value * (dominating ? 0.5 : 1)).round(), 0);
+
+  int up(int c, int value, bool dominating) =>
+      min((c + value * (dominating ? 1.5 : 1)).round(), 255);
+
   void _modeChanged(Mode mode) {
     setState(() => _mode = mode);
   }
@@ -74,12 +80,6 @@ class ShadesScreenState extends State<ShadesScreen> {
                       pickerColor: _baseColor, onColorChanged: _colorChanged)));
         });
   }
-
-  int down(int c, int value, bool dominating) =>
-      max((c - value * (dominating ? 0.5 : 1)).round(), 0);
-
-  int up(int c, int value, bool dominating) =>
-      min((c + value * (dominating ? 1.5 : 1)).round(), 255);
 
   @override
   Widget build(BuildContext context) {
