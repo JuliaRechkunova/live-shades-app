@@ -7,9 +7,9 @@ import 'package:share/share.dart';
 void main() => runApp(App());
 
 final String appName = 'Shading Palette';
-final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm', 'Neutral to Warm', 'Neutral to Cold', 'Warm to Neurtal', 'Cold to Neutral'];
+final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm', 'Neutral to Warm', 'Neutral to Cold', 'Warm to Neurtal', 'Cold to Neutral', 'Warm to Warm', 'Cold to Cold'];
 
-enum Mode { n, w2c, c2w, n2w, n2c, w2n, c2n }
+enum Mode { n, w2c, c2w, n2w, n2c, w2n, c2n, w2w, c2c }
 
 class App extends StatelessWidget {
   @override
@@ -34,13 +34,13 @@ class ShadesState extends State<Shades> {
     List.generate(count, (int index) => index + 1).forEach((int index) {
       int value = step * index;
       Color hColor = Color(baseColor.value)
-          .withRed(up(baseColor.red, value, mode == Mode.c2w || mode == Mode.n2w))
+          .withRed(up(baseColor.red, value, mode == Mode.c2w || mode == Mode.n2w || mode == Mode.w2w))
           .withGreen(up(baseColor.green, value, false))
-          .withBlue(up(baseColor.blue, value, mode == Mode.w2c || mode == Mode.n2c));
+          .withBlue(up(baseColor.blue, value, mode == Mode.w2c || mode == Mode.n2c || mode == Mode.c2c));
       Color sColor = Color(baseColor.value)
-          .withRed(down(baseColor.red, value, mode == Mode.w2c || mode == Mode.w2n))
+          .withRed(down(baseColor.red, value, mode == Mode.w2c || mode == Mode.w2n || mode == Mode.w2w))
           .withGreen(down(baseColor.green, value, false))
-          .withBlue(down(baseColor.blue, value, mode == Mode.c2w || mode == Mode.c2n));
+          .withBlue(down(baseColor.blue, value, mode == Mode.c2w || mode == Mode.c2n || mode == Mode.c2c));
       colors.add(hColor);
       colors.insert(0, sColor);
     });
