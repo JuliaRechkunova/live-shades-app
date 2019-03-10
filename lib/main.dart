@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:share/share.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,12 +24,36 @@ class ShadesScreen extends StatefulWidget {
   final String title;
 
   @override
-  _ShadesScreenState createState() => _ShadesScreenState();
+  ShadesScreenState createState() => ShadesScreenState();
 }
 
-class _ShadesScreenState extends State<ShadesScreen> {
+class ShadesScreenState extends State<ShadesScreen> {
   Color _baseColor = Colors.deepPurpleAccent;
   Mode _mode = Mode.neutral;
+  int _count = 5;
+
+  List<Color> get _colors {
+    List<Color> colors = [_baseColor];
+    int step = (255 / (2 * _count + 1)).floor();
+
+    List.generate(_count, (int index) => index + 1).forEach((int index) {
+      int value = step * index;
+      Color hColor = Color(_baseColor.value)
+          .withRed(up(_baseColor.red, value, _mode == Mode.coldToWarm))
+          .withGreen(up(_baseColor.green, value, false))
+          .withBlue(up(_baseColor.blue, value, _mode == Mode.warmToCold));
+
+      Color sColor = Color(_baseColor.value)
+          .withRed(down(_baseColor.red, value, _mode == Mode.warmToCold))
+          .withGreen(down(_baseColor.green, value, false))
+          .withBlue(down(_baseColor.blue, value, _mode == Mode.coldToWarm));
+
+      colors.add(hColor);
+      colors.insert(0, sColor);
+    });
+
+    return colors;
+  }
 
   void _modeChanged(Mode mode) {
     setState(() => _mode = mode);
@@ -49,6 +74,12 @@ class _ShadesScreenState extends State<ShadesScreen> {
                       pickerColor: _baseColor, onColorChanged: _colorChanged)));
         });
   }
+
+  int down(int c, int value, bool dominating) =>
+      max((c - value * (dominating ? 0.5 : 1)).round(), 0);
+
+  int up(int c, int value, bool dominating) =>
+      min((c + value * (dominating ? 1.5 : 1)).round(), 255);
 
   @override
   Widget build(BuildContext context) {
@@ -72,52 +103,23 @@ class _ShadesScreenState extends State<ShadesScreen> {
                 ];
               },
               onSelected: _modeChanged,
-            )
+            ),
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                Share.share(_colors
+                    .map((color) =>
+                        '#${color.value.toRadixString(16).substring(2)}')
+                    .join('\n'));
+              },
+            ),
           ],
         ),
-        body: Shades(baseColor: _baseColor, count: 5, mode: _mode));
+        body: ColorList(colors: _colors));
   }
 }
 
 enum Mode { warmToCold, neutral, coldToWarm }
-
-class Shades extends StatelessWidget {
-  Shades({@required this.baseColor, @required this.count, @required this.mode});
-
-  final Color baseColor;
-  final int count;
-  final Mode mode;
-
-  int down(int c, int value, bool dominating) =>
-      max((c - value * (dominating ? 0.5 : 1)).round(), 0);
-
-  int up(int c, int value, bool dominating) =>
-      min((c + value * (dominating ? 1.5 : 1)).round(), 255);
-
-  @override
-  Widget build(BuildContext context) {
-    List<Color> colors = [baseColor];
-    int step = (255 / (2 * count + 1)).floor();
-
-    List.generate(count, (int index) => index + 1).forEach((int index) {
-      int value = step * index;
-      Color hColor = Color(baseColor.value)
-          .withRed(up(baseColor.red, value, mode == Mode.coldToWarm))
-          .withGreen(up(baseColor.green, value, false))
-          .withBlue(up(baseColor.blue, value, mode == Mode.warmToCold));
-
-      Color sColor = Color(baseColor.value)
-          .withRed(down(baseColor.red, value, mode == Mode.warmToCold))
-          .withGreen(down(baseColor.green, value, false))
-          .withBlue(down(baseColor.blue, value, mode == Mode.coldToWarm));
-
-      colors.add(hColor);
-      colors.insert(0, sColor);
-    });
-
-    return ColorList(colors: colors);
-  }
-}
 
 class ColorList extends StatelessWidget {
   ColorList({@required this.colors});
