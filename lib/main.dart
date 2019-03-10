@@ -46,9 +46,14 @@ class _ShadesScreenState extends State<ShadesScreen> {
               icon: Icon(Icons.palette),
               itemBuilder: (BuildContext context) {
                 return [
-                  PopupMenuItem(value: ShadesMode.neutral, child: Text('Neutral')),
-                  PopupMenuItem(value: ShadesMode.warmToCold, child: Text('Warm to Cold')),
-                  PopupMenuItem(value: ShadesMode.coldToWarm, child: Text('Cold to Warm')),
+                  PopupMenuItem(
+                      value: ShadesMode.neutral, child: Text('Neutral')),
+                  PopupMenuItem(
+                      value: ShadesMode.warmToCold,
+                      child: Text('Warm to Cold')),
+                  PopupMenuItem(
+                      value: ShadesMode.coldToWarm,
+                      child: Text('Cold to Warm')),
                 ];
               },
               onSelected: _menuItemSelected,
@@ -63,11 +68,7 @@ class _ShadesScreenState extends State<ShadesScreen> {
   }
 }
 
-enum ShadesMode {
-  warmToCold,
-  neutral,
-  coldToWarm
-}
+enum ShadesMode { warmToCold, neutral, coldToWarm }
 
 class Shades extends StatelessWidget {
   Shades({@required this.baseColor, @required this.count, @required this.mode});
@@ -83,14 +84,30 @@ class Shades extends StatelessWidget {
 
     List.generate(count, (int index) => index + 1).forEach((int index) {
       Color nextColor = Color(baseColor.value)
-          .withRed(min((baseColor.red + step * index * (mode == ShadesMode.coldToWarm ? 2 : 1)).round(), 255))
+          .withRed(min(
+              (baseColor.red +
+                      step * index * (mode == ShadesMode.coldToWarm ? 2 : 1))
+                  .round(),
+              255))
           .withGreen(min(baseColor.green + step * index, 255))
-          .withBlue(min((baseColor.blue + step * index * (mode == ShadesMode.warmToCold ? 2 : 1)).round(), 255));
+          .withBlue(min(
+              (baseColor.blue +
+                      step * index * (mode == ShadesMode.warmToCold ? 2 : 1))
+                  .round(),
+              255));
 
       Color prevColor = Color(baseColor.value)
-          .withRed(max((baseColor.red - step * index * (mode == ShadesMode.warmToCold ? 0.5 : 1)).round(), 0))
+          .withRed(max(
+              (baseColor.red -
+                      step * index * (mode == ShadesMode.warmToCold ? 0.5 : 1))
+                  .round(),
+              0))
           .withGreen(max(baseColor.green - step * index, 0))
-          .withBlue(max((baseColor.blue - step * index * (mode == ShadesMode.coldToWarm ? 0.5 : 1)).round(), 0));
+          .withBlue(max(
+              (baseColor.blue -
+                      step * index * (mode == ShadesMode.coldToWarm ? 0.5 : 1))
+                  .round(),
+              0));
 
       colors.add(nextColor);
       colors.insert(0, prevColor);
@@ -107,11 +124,15 @@ class ColorList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: colors.length,
-        itemBuilder: (BuildContext context, int position) {
-          return ColorItem(color: colors[position]);
-        });
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: colors
+          .map((color) => Expanded(
+                child: ColorItem(color: color),
+              ))
+          .toList(),
+    );
   }
 }
 
@@ -122,10 +143,6 @@ class ColorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      decoration: BoxDecoration(color: color),
-      child: Text('#${color.value.toRadixString(16).substring(2)}'),
-    );
+    return Container(color: color);
   }
 }
