@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appTitle,
       theme: ThemeData(
-        primaryColor: Color(0xff383838),
+        primaryColor: Colors.white,
       ),
       home: ShadesScreen(title: appTitle),
     );
@@ -28,12 +29,31 @@ class ShadesScreen extends StatefulWidget {
 }
 
 class _ShadesScreenState extends State<ShadesScreen> {
+  Color _baseColor = Colors.deepPurpleAccent;
   ShadesMode _mode = ShadesMode.neutral;
 
   void _menuItemSelected(ShadesMode mode) {
-    setState(() {
-      _mode = mode;
-    });
+    setState(() => _mode = mode);
+  }
+
+  void _colorChanged(Color color) {
+    setState(() => _baseColor = color);
+  }
+
+  void _changeColor(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Change base color'),
+              content: SingleChildScrollView(
+                  child: ColorPicker(
+                pickerColor: _baseColor,
+                onColorChanged: _colorChanged,
+                enableLabel: true,
+                pickerAreaHeightPercent: 0.8,
+              )));
+        });
   }
 
   @override
@@ -42,8 +62,14 @@ class _ShadesScreenState extends State<ShadesScreen> {
         appBar: AppBar(
           title: Text(widget.title),
           actions: <Widget>[
-            PopupMenuButton(
+            IconButton(
               icon: Icon(Icons.palette),
+              onPressed: () {
+                _changeColor(context);
+              },
+            ),
+            PopupMenuButton(
+              icon: Icon(Icons.tune),
               itemBuilder: (BuildContext context) {
                 return [
                   PopupMenuItem(
@@ -61,7 +87,7 @@ class _ShadesScreenState extends State<ShadesScreen> {
           ],
         ),
         body: Shades(
-          baseColor: Colors.deepPurpleAccent,
+          baseColor: _baseColor,
           count: 5,
           mode: _mode,
         ));
