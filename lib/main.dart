@@ -12,9 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appTitle,
-      theme: ThemeData(
-        primaryColor: Colors.white,
-      ),
+      theme: ThemeData(primaryColor: Colors.white),
       home: ShadesScreen(title: appTitle),
     );
   }
@@ -30,9 +28,9 @@ class ShadesScreen extends StatefulWidget {
 
 class _ShadesScreenState extends State<ShadesScreen> {
   Color _baseColor = Colors.deepPurpleAccent;
-  ShadesMode _mode = ShadesMode.neutral;
+  Mode _mode = Mode.neutral;
 
-  void _menuItemSelected(ShadesMode mode) {
+  void _modeChanged(Mode mode) {
     setState(() => _mode = mode);
   }
 
@@ -48,11 +46,7 @@ class _ShadesScreenState extends State<ShadesScreen> {
               title: Text('Change base color'),
               content: SingleChildScrollView(
                   child: ColorPicker(
-                pickerColor: _baseColor,
-                onColorChanged: _colorChanged,
-                enableLabel: true,
-                pickerAreaHeightPercent: 0.8,
-              )));
+                      pickerColor: _baseColor, onColorChanged: _colorChanged)));
         });
   }
 
@@ -64,44 +58,41 @@ class _ShadesScreenState extends State<ShadesScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.palette),
-              onPressed: () {
-                _changeColor(context);
-              },
+              onPressed: () => _changeColor(context),
             ),
             PopupMenuButton(
               icon: Icon(Icons.tune),
               itemBuilder: (BuildContext context) {
                 return [
+                  PopupMenuItem(value: Mode.neutral, child: Text('Neutral')),
                   PopupMenuItem(
-                      value: ShadesMode.neutral, child: Text('Neutral')),
+                      value: Mode.warmToCold, child: Text('Warm to Cold')),
                   PopupMenuItem(
-                      value: ShadesMode.warmToCold,
-                      child: Text('Warm to Cold')),
-                  PopupMenuItem(
-                      value: ShadesMode.coldToWarm,
-                      child: Text('Cold to Warm')),
+                      value: Mode.coldToWarm, child: Text('Cold to Warm')),
                 ];
               },
-              onSelected: _menuItemSelected,
+              onSelected: _modeChanged,
             )
           ],
         ),
-        body: Shades(
-          baseColor: _baseColor,
-          count: 5,
-          mode: _mode,
-        ));
+        body: Shades(baseColor: _baseColor, count: 5, mode: _mode));
   }
 }
 
-enum ShadesMode { warmToCold, neutral, coldToWarm }
+enum Mode { warmToCold, neutral, coldToWarm }
 
 class Shades extends StatelessWidget {
   Shades({@required this.baseColor, @required this.count, @required this.mode});
 
   final Color baseColor;
   final int count;
-  final ShadesMode mode;
+  final Mode mode;
+
+  int down(int c, int value, bool dominating) =>
+      max((c - value * (dominating ? 0.5 : 1)).round(), 0);
+
+  int up(int c, int value, bool dominating) =>
+      min((c + value * (dominating ? 1.5 : 1)).round(), 255);
 
   @override
   Widget build(BuildContext context) {
@@ -109,34 +100,19 @@ class Shades extends StatelessWidget {
     int step = (255 / (2 * count + 1)).floor();
 
     List.generate(count, (int index) => index + 1).forEach((int index) {
-      Color nextColor = Color(baseColor.value)
-          .withRed(min(
-              (baseColor.red +
-                      step * index * (mode == ShadesMode.coldToWarm ? 2 : 1))
-                  .round(),
-              255))
-          .withGreen(min(baseColor.green + step * index, 255))
-          .withBlue(min(
-              (baseColor.blue +
-                      step * index * (mode == ShadesMode.warmToCold ? 2 : 1))
-                  .round(),
-              255));
+      int value = step * index;
+      Color hColor = Color(baseColor.value)
+          .withRed(up(baseColor.red, value, mode == Mode.coldToWarm))
+          .withGreen(up(baseColor.green, value, false))
+          .withBlue(up(baseColor.blue, value, mode == Mode.warmToCold));
 
-      Color prevColor = Color(baseColor.value)
-          .withRed(max(
-              (baseColor.red -
-                      step * index * (mode == ShadesMode.warmToCold ? 0.5 : 1))
-                  .round(),
-              0))
-          .withGreen(max(baseColor.green - step * index, 0))
-          .withBlue(max(
-              (baseColor.blue -
-                      step * index * (mode == ShadesMode.coldToWarm ? 0.5 : 1))
-                  .round(),
-              0));
+      Color sColor = Color(baseColor.value)
+          .withRed(down(baseColor.red, value, mode == Mode.warmToCold))
+          .withGreen(down(baseColor.green, value, false))
+          .withBlue(down(baseColor.blue, value, mode == Mode.coldToWarm));
 
-      colors.add(nextColor);
-      colors.insert(0, prevColor);
+      colors.add(hColor);
+      colors.insert(0, sColor);
     });
 
     return ColorList(colors: colors);
@@ -151,24 +127,12 @@ class ColorList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: colors
           .map((color) => Expanded(
-                child: ColorItem(color: color),
+                child: Container(color: color),
               ))
           .toList(),
     );
-  }
-}
-
-class ColorItem extends StatelessWidget {
-  ColorItem({@required this.color});
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(color: color);
   }
 }
