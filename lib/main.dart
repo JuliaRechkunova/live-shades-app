@@ -107,7 +107,7 @@ class ShadesState extends State<Shades> {
             },
             onSelected: countChanged,
           ),
-          IconButton(icon: Icon(Icons.share), onPressed: () {Share.share(colors.map((c) => toHex(c)).join('\n'));}),
+          IconButton(icon: Icon(Icons.share), onPressed: () {Share.share('$appName (${shadingModes[mode.index]}):\n${colors.map((c) => toHex(c)).join('\n')}');}),
         ],
       ),
       body: Palette(colors: colors, onTap: _onTap)
