@@ -49,7 +49,7 @@ class ShadesState extends State<Shades> {
   }
 
   @override
-  void initState() { super.initState(); loadColor(); }
+  void initState() { super.initState(); load(); }
 
   int up(int c, int value, bool faster) => min((c + value * (faster ? 1.5 : 1)).round(), 255);
 
@@ -57,17 +57,25 @@ class ShadesState extends State<Shades> {
 
   String toHex(Color c) => '#${c.value.toRadixString(16).substring(2)}';
 
-  void loadColor() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance(); setState(() { baseColor = Color(prefs.getInt('color') ?? Colors.deepPurpleAccent.value); });
+  void load() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      baseColor = Color(prefs.getInt('color') ?? Colors.deepPurpleAccent.value);
+      mode = Mode.values[prefs.getInt('mode') ?? mode.index];
+      count = prefs.getInt('count') ?? count;
+    });
   }
 
-  void modeChanged(Mode m) { setState(() => mode = m); }
-
-  void colorChanged(Color c) async {
-    setState(() => baseColor = c); SharedPreferences prefs = await SharedPreferences.getInstance(); prefs.setInt('color', baseColor.value);
+  void save(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(key, value);
   }
 
-  void countChanged(int c) { setState(() => count = c); }
+  void modeChanged(Mode m) { setState(() => mode = m); save('mode', m.index); }
+
+  void colorChanged(Color c) { setState(() => baseColor = c); save('color', c.value); }
+
+  void countChanged(int c) { setState(() => count = c); save('count', c); }
 
   void changeColor(BuildContext ctx) {
     showDialog(context: ctx, builder: (BuildContext _) => AlertDialog(
