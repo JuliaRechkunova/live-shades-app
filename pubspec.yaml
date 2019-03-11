@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_colorpicker: 0.2.2
   share: 0.6.0+1
+  shared_preferences: 0.5.1+1
   flutter_launcher_icons: ^0.7.0 # flutter packages pub run flutter_launcher_icons:main
 
 flutter_icons:
