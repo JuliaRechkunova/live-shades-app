@@ -7,6 +7,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => MaterialApp(title: appName, theme: ThemeData(primaryColor: Colors.white), home: Shades());
 }
+class Palette extends StatelessWidget {
+  Palette({@required this.colors, @required this.onTap});
+  final List<Color> colors; final Function onTap;
+  @override
+  Widget build(BuildContext ctx) =>
+    Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: colors.map((color) => Expanded(child: GestureDetector(onTap: () {onTap(color);}, child: Container(color: color)))).toList());
+}
 class Shades extends StatefulWidget {
   @override
   ShadesState createState() => ShadesState();
@@ -68,11 +75,4 @@ class ShadesState extends State<Shades> {
       body: mColor != null ? Palette(colors: colors, onTap: onTap) : Center(child: CircularProgressIndicator())
     );
   }
-}
-class Palette extends StatelessWidget {
-  Palette({@required this.colors, @required this.onTap});
-  final List<Color> colors; final Function onTap;
-  @override
-  Widget build(BuildContext ctx) =>
-    Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: colors.map((color) => Expanded(child: GestureDetector(onTap: () {onTap(color);}, child: Container(color: color)))).toList());
 }
