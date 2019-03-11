@@ -99,7 +99,7 @@ class ShadesState extends State<Shades> {
           PopupMenuButton(
             icon: Icon(Icons.filter_list),
             itemBuilder: (BuildContext _) {
-              return [5, 4, 3, 2]
+              return [5, 4, 3, 2, 1]
                   .map((int c) => PopupMenuItem(
                   value: c,
                   child: Text('${c * 2 + 1} shades', style: TextStyle(fontWeight: count == c ? FontWeight.bold : FontWeight.normal))))
