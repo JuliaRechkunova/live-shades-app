@@ -1,26 +1,40 @@
-import 'dart:math'; import 'package:flutter/material.dart'; import 'package:flutter/services.dart'; import 'package:flutter_colorpicker/flutter_colorpicker.dart'; import 'package:shared_preferences/shared_preferences.dart'; import 'package:share/share.dart';
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share/share.dart';
+
 void main() => runApp(App());
+
 final String appName = 'Shading Palette';
 final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm', 'Neutral to Warm', 'Neutral to Cold', 'Warm to Neurtal', 'Cold to Neutral', 'Warm to Warm', 'Cold to Cold'];
 enum Mode { n, w2c, c2w, n2w, n2c, w2n, c2n, w2w, c2c }
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => MaterialApp(title: appName, theme: ThemeData(primaryColor: Colors.white), home: Shades());
 }
+
 class Palette extends StatelessWidget {
   Palette({@required this.colors, @required this.onTap});
-  final List<Color> colors; final Function onTap;
+  final List<Color> colors;
+  final Function onTap;
   @override
   Widget build(BuildContext ctx) =>
     Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: colors.map((color) => Expanded(child: GestureDetector(onTap: () {onTap(color);}, child: Container(color: color)))).toList());
 }
+
 class Shades extends StatefulWidget {
   @override
   ShadesState createState() => ShadesState();
 }
+
 class ShadesState extends State<Shades> {
   final GlobalKey<ScaffoldState> sKey = new GlobalKey<ScaffoldState>();
-  Color mColor; Mode mode = Mode.n; int count = 5;
+  Color mColor;
+  Mode mode = Mode.n;
+  int count = 5;
   List<Color> get colors {
     List<Color> colors = [mColor];
     int step = (255 / (2 * count + 1)).floor();
