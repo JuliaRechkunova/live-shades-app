@@ -8,7 +8,7 @@ import 'package:share/share.dart';
 void main() => runApp(App());
 
 final String appName = 'Shading Palette';
-final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm', 'Neutral to Warm', 'Neutral to Cold', 'Warm to Neurtal', 'Cold to Neutral', 'Warm to Warm', 'Cold to Cold'];
+final List<String> shadingModes = ['Neutral', 'Warm to Cold', 'Cold to Warm', 'Neutral to Warm', 'Neutral to Cold', 'Warm to Neutral', 'Cold to Neutral', 'Warm to Warm', 'Cold to Cold'];
 enum Mode { n, w2c, c2w, n2w, n2c, w2n, c2n, w2w, c2c }
 
 class App extends StatelessWidget {
