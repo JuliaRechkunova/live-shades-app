@@ -19,18 +19,30 @@ Available modes are:
 - Warm to Warm (warm shadows and highlights)
 - Cold to Cold (cold shadows and highlights).
 
-Some examples:
+## Shades examples
+
+`Neutral`
 
 ![Mode Neutral](assets/examples/example-neutral.png)
 
+`Warm to Cold`
+
 ![Mode Warm to Cold](assets/examples/example-warm-to-cold.png)
+
+`Cold to Warm`
 
 ![Mode Cold to Warm](assets/examples/example-cold-to-warm.png)
 
-UI screenshots:
+## UI screenshots
+
+Medium color picker:
 
 ![Change medium color](assets/examples/screenshot-medium-color.png)
 
-![Change mode](assets/examples/screenshot-mode.png)
+Mode dropdown:
+
+![Change mode](assets/examples/screenshot-modes.png)
+
+Shades count dropdown:
 
 ![Change shades count](assets/examples/screenshot-shades-count.png)
