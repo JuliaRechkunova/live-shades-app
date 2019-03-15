@@ -52,7 +52,7 @@ class ShadesState extends State<Shades> {
   int up(int c, int value, bool faster) => min((c + value * (faster ? 1.5 : 1)).round(), 255);
   int down(int c, int value, bool slower) => max((c - value * (slower ? 0.5 : 1)).round(), 0);
   String toHex(Color c) => '#${c.value.toRadixString(16).substring(2)}';
-  void load() async { SharedPreferences prefs = await SharedPreferences.getInstance(); setState(() { mColor = Color(prefs.getInt('color') ?? Colors.deepPurpleAccent.value); mode = Mode.values[prefs.getInt('mode') ?? mode.index]; count = prefs.getInt('count') ?? count; }); }
+  void load() async { SharedPreferences prefs = await SharedPreferences.getInstance(); setState(() { mColor = Color(prefs.getInt('color') ?? Colors.purple.value); mode = Mode.values[prefs.getInt('mode') ?? mode.index]; count = prefs.getInt('count') ?? count; }); }
   void save(key, value) async { SharedPreferences prefs = await SharedPreferences.getInstance(); prefs.setInt(key, value); }
   void modeChanged(Mode m) { setState(() => mode = m); save('mode', m.index); }
   void colorChanged(Color c) { setState(() => mColor = c); save('color', c.value); }

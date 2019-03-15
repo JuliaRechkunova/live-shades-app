@@ -1,10 +1,9 @@
 # Shading palette
 
-Shading palette app helps to create "perfect" shades for coloring a sketch.
+Shading palette app helps to prepare nice shades for coloring a sketch.
 
 It can be essential for artist and designers. Colors bring life to 2D sketches if they are selected correctly.
-The trick is to use warm shadows and cold highlights if a light source has a cold color (or cold shadows and warm highlights if a light source has a warm color)
-for more natural and interesting look of their art projects.
+The trick is to use warm shadows and cold highlights if a light source has a cold color (or cold shadows and warm highlights if a light source has a warm color) for a more natural and interesting look.
 
 Give it a try! Just select a medium color, choose a mode and the app will generate beautiful shades.
 
@@ -19,33 +18,19 @@ Available modes are:
 - Warm to Warm (warm shadows and highlights)
 - Cold to Cold (cold shadows and highlights).
 
+Play with settings in the app to get inspired and to find a shading palette which works the best for your art project.
+
 ## Shades examples
 
-`Neutral`
+For the same medium color in 3 different modes (`Neutral`, `Warm to Cold`, `Cold to Warm`) it generates these shades:
 
-![Mode Neutral](assets/examples/example-neutral.png)
-
-`Warm to Cold`
-
-![Mode Warm to Cold](assets/examples/example-warm-to-cold.png)
-
-`Cold to Warm`
-
-![Mode Cold to Warm](assets/examples/example-cold-to-warm.png)
+![Modes example](assets/examples/examples-for-the-same-medium-color.png)
 
 ## UI screenshots
 
-Medium color picker:
+"Medium color" picker, "Mode" dropdown, "Shades count" dropdown"
 
-![Change medium color](assets/examples/screenshot-medium-color.png)
-
-Mode dropdown:
-
-![Change mode](assets/examples/screenshot-modes.png)
-
-Shades count dropdown:
-
-![Change shades count](assets/examples/screenshot-shades-count.png)
+![Change medium color](assets/examples/screenshot-settings.png)
 
 MIT License
 
