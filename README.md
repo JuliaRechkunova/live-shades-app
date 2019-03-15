@@ -24,13 +24,13 @@ Play with settings in the app to get inspired and to find a shading palette whic
 
 For the same medium color in 3 different modes (`Neutral`, `Warm to Cold`, `Cold to Warm`) it generates these shades:
 
-![Modes example](assets/examples/examples-for-the-same-medium-color.png)
+![Modes example](assets/examples/examples-for-the-same-medium-color.jpg)
 
 ## UI screenshots
 
 "Medium color" picker, "Mode" dropdown, "Shades count" dropdown"
 
-![Change medium color](assets/examples/screenshot-settings.png)
+![Change medium color](assets/examples/screenshot-settings.jpg)
 
 MIT License
 
