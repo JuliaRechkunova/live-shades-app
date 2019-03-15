@@ -46,3 +46,7 @@ Mode dropdown:
 Shades count dropdown:
 
 ![Change shades count](assets/examples/screenshot-shades-count.png)
+
+MIT License
+
+Julia Rechkunova <julia.rechkunova@gmail.com>
