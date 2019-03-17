@@ -1,9 +1,12 @@
-# Shading palette
+# LiveShades
 
-Shading palette app helps to prepare nice shades for coloring a sketch.
+LiveShades app helps to prepare nice shades for coloring and shading a sketch.
 
-It can be essential for artist and designers. Colors bring life to 2D sketches if they are selected correctly.
-The trick is to use warm shadows and cold highlights if a light source has a cold color (or cold shadows and warm highlights if a light source has a warm color) for a more natural and interesting look.
+It can be essential for artist and designers, especially beginners, as colors bring life and 3D effect to 2D sketches if they are selected correctly.
+
+The trick is to change hue along with color value for a more natural and interesting look. Depending on a light source hue can get warmer or colder:
+- for a "warm" light source it's recommended to have warm highlights and cold shadows,
+- for a "cold" light source - cold highlights and warm shadows.
 
 Give it a try! Just select a medium color, choose a mode and the app will generate beautiful shades.
 
