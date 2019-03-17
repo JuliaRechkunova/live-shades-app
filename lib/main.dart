@@ -69,12 +69,12 @@ class ShadesState extends State<Shades> {
           IconButton(icon: Icon(Icons.palette), onPressed: () => changeColor(ctx)),
           PopupMenuButton(
             icon: Icon(Icons.tune),
-            itemBuilder: (BuildContext _) => Mode.values.map((Mode m) => PopupMenuItem(value: m, child: Text(shadingModes[m.index], style: TextStyle(fontWeight: mode == m ? FontWeight.bold : FontWeight.normal)))).toList(),
+            itemBuilder: (BuildContext _) => Mode.values.map((Mode m) => CheckedPopupMenuItem(checked: mode == m, value: m, child: Text(shadingModes[m.index]))).toList(),
             onSelected: modeChanged
           ),
           PopupMenuButton(
             icon: Icon(Icons.filter_list),
-            itemBuilder: (BuildContext _) => [5, 4, 3, 2, 1].map((int c) => PopupMenuItem(value: c, child: Text('${c * 2 + 1} shades', style: TextStyle(fontWeight: count == c ? FontWeight.bold : FontWeight.normal)))).toList(),
+            itemBuilder: (BuildContext _) => [5, 4, 3, 2, 1].map((int c) => CheckedPopupMenuItem(checked: count == c, value: c, child: Text('${c * 2 + 1} shades'))).toList(),
             onSelected: countChanged
           ),
           IconButton(icon: Icon(Icons.share), onPressed: () {Share.share('$appName (${shadingModes[mode.index]}):\n${colors.map((c) => toHex(c)).join('\n')}');}),
