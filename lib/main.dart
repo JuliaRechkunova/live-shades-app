@@ -57,7 +57,7 @@ class ShadesState extends State<Shades> {
   void modeChanged(Mode m) { setState(() => mode = m); save('mode', m.index); }
   void colorChanged(Color c) { setState(() => mColor = c); save('color', c.value); }
   void countChanged(int c) { setState(() => count = c); save('count', c); }
-  void changeColor(BuildContext ctx) { showDialog(context: ctx, builder: (BuildContext _) => AlertDialog(title: Text('Change medium color'), content: SingleChildScrollView(child: ColorPicker(enableAlpha: false, pickerColor: mColor, onColorChanged: colorChanged)))); }
+  void changeColor(BuildContext ctx) { showDialog(context: ctx, builder: (BuildContext _) => AlertDialog(title: Text('Change mid-tone color'), content: SingleChildScrollView(child: ColorPicker(enableAlpha: false, pickerColor: mColor, onColorChanged: colorChanged)))); }
   void onTap(Color c) { final sb = SnackBar(backgroundColor: Colors.white, content: Text(toHex(c), style: TextStyle(color: Colors.black87)), action: SnackBarAction(label: 'COPY', onPressed: () {Clipboard.setData(ClipboardData(text: toHex(c)));}),); sKey.currentState.hideCurrentSnackBar(); sKey.currentState.showSnackBar(sb); }
   @override
   Widget build(BuildContext ctx) {
